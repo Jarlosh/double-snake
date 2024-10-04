@@ -8,12 +8,14 @@ namespace DoubleSnake.Installers
     public class DoubleSnakeGameModeInstaller: MonoInstaller
     {
         [SerializeField] private DoubleSnakeGameMode.Settings settings;
+        [SerializeField] private MapGrid.Settings gridSettings;
 
         public override void InstallBindings()
         {
             Container
-                .Bind<MapGrid>()
-                .AsSingle();
+                .BindInterfacesAndSelfTo<MapGrid>()
+                .AsSingle()
+                .WithArguments(gridSettings);
 
             Container
                 .BindInstance(settings);

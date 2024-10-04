@@ -2,6 +2,6 @@
 {
     public interface IGameMode
     {
-        void StartGame();
+        void OnPlayPressed();
     }
 }

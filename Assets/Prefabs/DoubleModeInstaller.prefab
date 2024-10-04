@@ -82,9 +82,11 @@ MonoBehaviour:
   settings:
     <PlayerSnakeSettings>k__BackingField:
       <SegmentColor>k__BackingField: {r: 0.26633143, g: 0.5943396, b: 0.29768515, a: 1}
-    <StartLength>k__BackingField: 5
     <TickSettings>k__BackingField:
-      <TicksPerSecond>k__BackingField: 2
+      <TicksPerSecond>k__BackingField: 20
+    <StartLength>k__BackingField: 5
+  gridSettings:
+    <Size>k__BackingField: {x: 15, y: 15}
 --- !u!114 &2759668355156914098
 MonoBehaviour:
   m_ObjectHideFlags: 0
