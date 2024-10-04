@@ -4,6 +4,7 @@ using Zenject;
 
 namespace DoubleSnake
 {
+    // todo: implement mobile inputs 
     public class PlayerInputQueue: ITickable
     {
         private readonly Queue<Vector2Int> queue = new();
@@ -11,19 +12,19 @@ namespace DoubleSnake
 
         public void Tick()
         {
-            if (Input.GetKeyDown("up") && LastDirection != Vector2.down)
+            if (Input.GetKeyDown(KeyCode.UpArrow))
             {
                 Enqueue(Vector2Int.up);
             }
-            else if (Input.GetKeyDown("down") && LastDirection != Vector2.up)
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 Enqueue(Vector2Int.down);
             }
-            else if (Input.GetKeyDown("left") && LastDirection != Vector2.right)
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 Enqueue(Vector2Int.left);
             }
-            else if (Input.GetKeyDown("right") && LastDirection != Vector2.left)
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
             {
                 Enqueue(Vector2Int.right);
             }
@@ -31,6 +32,10 @@ namespace DoubleSnake
 
         public void Enqueue(Vector2Int direction)
         {
+            if (LastDirection == -direction)
+            {
+                return;
+            }
             queue.Enqueue(direction);
             LastDirection = direction;
         }

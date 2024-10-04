@@ -23,6 +23,7 @@ namespace DoubleSnake.Installers
                     .WithInitialSize(5)
                     .FromComponentInNewPrefab(settings.segmentPrefab)
                     .UnderTransformGroup("Segments"));
+
         }
     }
 }

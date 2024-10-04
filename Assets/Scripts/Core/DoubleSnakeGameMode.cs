@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DoubleSnake.Snake;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace DoubleSnake.Core
@@ -70,7 +71,7 @@ namespace DoubleSnake.Core
             }
         }
 
-        private static void GenerateSnakePositions(
+        private void GenerateSnakePositions(
             Vector2Int headPosition, 
             Vector2Int headDirection, 
             int length, 
@@ -78,19 +79,30 @@ namespace DoubleSnake.Core
         {
             for (int i = 0; i < length; i++)
             {
-                results.Add(headPosition - headDirection * i);
+                results.Add(grid.Clamp(headPosition - headDirection * i));
             }
         }
 
-        public void StartGame()
+        public void OnPlayPressed()
         {
-            tickController.IsPlaying = true;
+            if (player.IsAlive)
+            {
+                tickController.IsPlaying = !tickController.IsPlaying;
+            }
+            else
+            {
+                Reset();
+            }
         }
 
+        private void Reset()
+        {
+            // debug temp 
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+        
         private void OnTick()
         {
-            // yeah there are allocations for these local funcs to capture .this
-            // but exactly there is no big impact and I am rushing
             PrepareTurn();
             MoveSnakes();
 
@@ -101,7 +113,18 @@ namespace DoubleSnake.Core
 
             void MoveSnakes()
             {
-                player.MoveTo(player.HeadPosition + player.StepDirection);
+                var next = player.NextPosition;
+                switch (grid[next])
+                {
+                    case ISnake snake:
+                        player.Die();
+                        tickController.IsPlaying = false;
+                        break; 
+                }
+                if(player.IsAlive)
+                {
+                    player.Move();
+                }
             }
         }
         
@@ -109,8 +132,8 @@ namespace DoubleSnake.Core
         public class Settings
         {
             [field: SerializeField] public SnakeSettings PlayerSnakeSettings { get; private set; }
-            [field: SerializeField] public int StartLength { get; private set; }
             [field: SerializeField] public TickController.Settings TickSettings { get; private set; }
+            [field: SerializeField] public int StartLength { get; private set; }
         }
     }
 }
